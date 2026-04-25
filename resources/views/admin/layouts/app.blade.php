@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin') · {{ config('app.name') }}</title>
     <style>
-        body { font-family: system-ui, sans-serif; max-width: 480px; margin: 3rem auto; padding: 0 1rem; }
+        body { font-family: system-ui, sans-serif; max-width: 960px; margin: 3rem auto; padding: 0 1rem; }
         label { display: block; margin-top: 1rem; font-weight: 600; }
         input { width: 100%; padding: 0.5rem; margin-top: 0.25rem; box-sizing: border-box; }
         button { margin-top: 1.25rem; padding: 0.6rem 1rem; }
@@ -33,5 +33,7 @@
     @endif
 
     @yield('content')
+
+    @stack('scripts')
 </body>
 </html>
