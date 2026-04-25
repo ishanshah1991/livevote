@@ -94,8 +94,9 @@ final class VoteService
             throw $e;
         }
 
-        // Step 5: broadcast for real-time updates (Task 6)
-        VoteCast::dispatch($vote);
+        // Step 5: broadcast updated counts to all poll subscribers
+        $option = PollOption::find($optionId);
+        VoteCast::dispatch($poll, $option, $option->fresh()->votes_count);
 
         return $vote;
     }
