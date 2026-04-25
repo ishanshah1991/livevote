@@ -6,8 +6,10 @@ namespace App\Providers;
 
 use App\Repositories\Contracts\AdminRepositoryInterface;
 use App\Repositories\Contracts\PollRepositoryInterface;
+use App\Repositories\Contracts\VoteRepositoryInterface;
 use App\Repositories\Eloquent\AdminRepository;
 use App\Repositories\Eloquent\PollRepository;
+use App\Repositories\Eloquent\VoteRepository;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -21,6 +23,7 @@ final class RepositoryServiceProvider extends ServiceProvider
     private const BINDINGS = [
         AdminRepositoryInterface::class => AdminRepository::class,
         PollRepositoryInterface::class  => PollRepository::class,
+        VoteRepositoryInterface::class  => VoteRepository::class,
     ];
 
     /**
