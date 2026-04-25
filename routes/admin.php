@@ -36,5 +36,6 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::post('polls', [PollController::class, 'store'])->name('polls.store');
         Route::get('polls/{id}', [PollController::class, 'show'])->name('polls.show');
         Route::get('polls/{id}/results', [PollController::class, 'results'])->name('polls.results');
+        Route::patch('polls/{id}/toggle', [PollController::class, 'toggleActive'])->name('polls.toggle');
     });
 });
