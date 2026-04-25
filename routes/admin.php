@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\PollController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +30,8 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
     Route::middleware('admin.auth')->group(function (): void {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-        Route::get('polls', [\App\Http\Controllers\Admin\PollController::class, 'index'])->name('polls.index');
+        Route::get('polls', [PollController::class, 'index'])->name('polls.index');
+
+        Route::get('polls/create', [PollController::class, 'create'])->name('polls.create');
     });
 });
