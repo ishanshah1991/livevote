@@ -41,23 +41,11 @@ final class CreateVotesTable extends Migration
             $table->comment('Individual vote records for both authenticated users and guests.');
         });
 
-        // Partial unique index: prevents the same authenticated user voting twice in a poll,
-        // while still allowing many NULL user_id rows for guest votes (deduplicated by IP).
-        // Uses CREATE UNIQUE INDEX ... WHERE syntax (PostgreSQL / SQLite). For MySQL fall back
-        // to application-level enforcement, since MySQL does not support partial indexes.
-        $driver = DB::connection()->getDriverName();
-
-        if (in_array($driver, ['pgsql', 'sqlite'], true)) {
-            DB::statement(
-                'CREATE UNIQUE INDEX votes_user_poll_unique ON votes (poll_id, user_id) WHERE user_id IS NOT NULL'
-            );
-        } else {
-            // MySQL/MariaDB: a plain composite unique index suffices because (poll_id, NULL)
-            // pairs are treated as distinct, so guests are unaffected.
-            Schema::table('votes', function (Blueprint $table): void {
-                $table->unique(['poll_id', 'user_id'], 'votes_user_poll_unique');
-            });
-        }
+        // PostgreSQL partial unique index: one vote per authenticated user per poll,
+        // while leaving guest rows (user_id IS NULL) free to be deduplicated by IP.
+        DB::statement(
+            'CREATE UNIQUE INDEX votes_user_poll_unique ON votes (poll_id, user_id) WHERE user_id IS NOT NULL'
+        );
     }
 
     /**
