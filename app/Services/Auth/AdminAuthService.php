@@ -7,6 +7,7 @@ namespace App\Services\Auth;
 use App\Exceptions\DuplicateEmailException;
 use App\Models\Admin;
 use App\Repositories\Contracts\AdminRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -52,5 +53,16 @@ final class AdminAuthService
         ]);
 
         return $admin;
+    }
+
+    /**
+     * Attempt to authenticate an admin against the "admin" guard.
+     *
+     * @param  array<string, mixed>  $credentials  Expects email + password.
+     * @return bool
+     */
+    public function attempt(array $credentials): bool
+    {
+        return Auth::guard('admin')->attempt($credentials);
     }
 }
