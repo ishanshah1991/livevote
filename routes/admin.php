@@ -33,5 +33,6 @@ Route::prefix('admin')->name('admin.')->group(function (): void {
         Route::get('polls', [PollController::class, 'index'])->name('polls.index');
 
         Route::get('polls/create', [PollController::class, 'create'])->name('polls.create');
+        Route::post('polls', [PollController::class, 'store'])->name('polls.store');
     });
 });
