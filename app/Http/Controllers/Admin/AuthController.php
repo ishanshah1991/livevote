@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\DuplicateEmailException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\AdminLoginRequest;
 use App\Http\Requests\Admin\AdminRegisterRequest;
 use App\Services\Auth\AdminAuthService;
 use Illuminate\Contracts\View\View;
@@ -52,5 +53,36 @@ final class AuthController extends Controller
         return redirect()
             ->route('admin.register')
             ->with('status', 'Registration successful. Please log in.');
+    }
+
+    /**
+     * Render the login form.
+     *
+     * @return View
+     */
+    public function showLogin(): View
+    {
+        return view('admin.auth.login');
+    }
+
+    /**
+     * Handle the login submission.
+     *
+     * @param  AdminLoginRequest  $request
+     * @return RedirectResponse
+     */
+    public function login(AdminLoginRequest $request): RedirectResponse
+    {
+        $credentials = $request->validated();
+
+        if (! $this->authService->attempt($credentials)) {
+            return back()
+                ->withErrors(['email' => 'Invalid credentials'])
+                ->withInput($request->except('password'));
+        }
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('admin.register'));
     }
 }
