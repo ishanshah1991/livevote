@@ -11,6 +11,7 @@ use App\Http\Requests\Admin\AdminRegisterRequest;
 use App\Services\Auth\AdminAuthService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 /**
  * Thin HTTP layer for admin auth — all real work is delegated to {@see AdminAuthService}.
@@ -83,6 +84,22 @@ final class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('admin.register'));
+        return redirect()->intended(route('admin.polls.index'));
+    }
+
+    /**
+     * Log the admin out and invalidate the session.
+     *
+     * @param  Request  $request
+     * @return RedirectResponse
+     */
+    public function logout(Request $request): RedirectResponse
+    {
+        $this->authService->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.login');
     }
 }

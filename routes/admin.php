@@ -18,6 +18,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->name('admin.')->group(function (): void {
 
+    // Guest-only auth routes
     Route::get('register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('register', [AuthController::class, 'register']);
+
+    Route::get('login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+
+    // Authenticated admin routes
+    Route::middleware('admin.auth')->group(function (): void {
+        Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+        Route::get('polls', [\App\Http\Controllers\Admin\PollController::class, 'index'])->name('polls.index');
+    });
 });

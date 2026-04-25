@@ -65,4 +65,12 @@ final class AdminAuthService
     {
         return Auth::guard('admin')->attempt($credentials);
     }
+
+    /**
+     * Log the currently authenticated admin out.
+     */
+    public function logout(): void
+    {
+        Auth::guard('admin')->logout();
+    }
 }
