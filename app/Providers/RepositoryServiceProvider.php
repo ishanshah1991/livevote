@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Repositories\Contracts\AdminRepositoryInterface;
+use App\Repositories\Contracts\PollRepositoryInterface;
 use App\Repositories\Eloquent\AdminRepository;
+use App\Repositories\Eloquent\PollRepository;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -18,6 +20,7 @@ final class RepositoryServiceProvider extends ServiceProvider
      */
     private const BINDINGS = [
         AdminRepositoryInterface::class => AdminRepository::class,
+        PollRepositoryInterface::class  => PollRepository::class,
     ];
 
     /**
